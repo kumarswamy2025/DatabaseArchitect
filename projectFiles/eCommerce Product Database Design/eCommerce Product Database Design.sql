@@ -89,7 +89,6 @@ create table
         constraint fk_productCategoryId foreign key (productCategoryId) references product_category (product_categoryId)
     );
 
-
 --  inserting data in the product table 
 insert into
     product (
@@ -153,15 +152,133 @@ values
     (18, 9, 'image1.png'),
     (19, 10, 'image1.png'),
     (20, 10, 'image1.png');
- 
---  fetching data from productImage
-select * from productImage;
 
+--  fetching data from productImage
+select
+    *
+from
+    productImage;
 
 --  inner join the product table and product category table 
+select
+    p.productID,
+    p.productName,
+    p.orginalPrice,
+    p.salePrice,
+    p.productCategoryId,
+    c.product_categoryId
+from
+    product p
+    inner join product_category c on c.product_categoryId = p.productCategoryId;
 
-select p.productID , p.productName,p.orginalPrice,p.salePrice from product p inner join product_category c  on p.productCategoryId=c.product_categoryId;
+-- creating color table
+create table
+    color (
+        colorID int,
+        colorName varchar(300),
+        -- This is the name of the  primary key constraint.
+        constraint pk_colorID primary key (colorID)
+    );
 
+-- inserting data into color table 
+insert into
+    color (colorID, colorName)
+values
+    (1, 'green'),
+    (2, 'red'),
+    (3, 'blue'),
+    (4, 'yellow'),
+    (5, 'pink'),
+    (6, 'grey'),
+    (7, 'light pink');
 
+-- creating product item table  
+create table
+    productItem (
+        productyItemID int,
+        productID int,
+        colorID int,
+        originalPrice int,
+        salePrice int,
+        -- This is the name of the  primary key constraint.
+        constraint pk_productyItemID primary key (productyItemID),
+        -- This is the name of the  foreign key constraint.
+        constraint fk_productID2 foreign key (productID) references product (productID),
+        -- This is the name of the  foreign key constraint.
+        constraint fk_colorID foreign key (colorID) references color (colorID)
+    );
 
+-- inserting data into productItem table 
+insert into
+    productItem (
+        productyItemID,
+        productID,
+        colorID,
+        originalPrice,
+        salePrice
+    )
+values
+    (1, 1, 1, 1200, 1000),
+    (2, 1, 2, 2500, 1800),
+    (3, 1, 3, 2000, 1900),
+    (4, 1, 4, 3000, 2500),
+    (5, 1, 5, 4000, 3500),
+    (6, 1, 6, 5000, 4500),
+    (7, 1, 6, 6000, 5500),
+    (8, 1, 6, 2300, 1700);
+
+(9, 1, 3, 7500, 6500),
+(10, 3, 7, 6500, 6000),
+(11, 4, 6, 6200, 5900),
+-- fetching productItem table data
+select
+    *
+from
+    productItem;
+
+--  creating size table 
+create table
+    sizeTable (
+        sizeID int,
+        sizeName varchar(200),
+        sortOrder int,
+        constraint pk_sizeID primary key (sizeID)
+    );
+
+-- inseting data into sizeTable 
+insert into
+    sizeTable (sizeID, sizeName, sortOrder)
+values
+    (1, 's', 1),
+    (2, 'm', 2),
+    (3, 'l', 3),
+    (4, 'xl', 4),
+    (5, 'xxl', 5),
+    (6, 'xxxl', 6),
+    (7, '2xl', 7);
+
+-- fetching  data from sizeTable 
+select
+    *
+from
+    sizeTable;
+
+-- altering productitem table adding sizeID column
+alter table productitem
+add column sizeID int;
+
+-- adding constraint tom sizeID column in productitem table 
+alter table productitem add constraint fk_sizeID foreign key (sizeID) references sizeTable (sizeID);
+
+-- altering productitem table adding stock_qty column
+alter table productitem
+add column stock_qty int ;
+
+--  setting up stock_qty=50 as value 
+UPDATE productitem
+SET stock_qty = 50; 
+
+--  setting up stock_qty=50 as value 
+UPDATE productitem
+SET sizeID = 1; 
 
