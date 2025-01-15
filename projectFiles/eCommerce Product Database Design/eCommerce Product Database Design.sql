@@ -89,6 +89,7 @@ create table
         constraint fk_productCategoryId foreign key (productCategoryId) references product_category (product_categoryId)
     );
 
+
 --  inserting data in the product table 
 insert into
     product (
@@ -155,3 +156,12 @@ values
  
 --  fetching data from productImage
 select * from productImage;
+
+
+--  inner join the product table and product category table 
+
+select p.productID , p.productName,p.orginalPrice,p.salePrice from product p inner join product_category c  on p.productCategoryId=c.product_categoryId;
+
+
+
+
